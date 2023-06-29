@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 export const homeSlice = createSlice({
   name: "home",
   initialState: {
-    url: { name: "test" },
+    url: { backdrop: "", poster: "", profile: "" },
     genres: {},
   },
   reducers: {

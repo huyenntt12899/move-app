@@ -12,18 +12,26 @@ import SearchResult from "./pages/search-result/index";
 import Explore from "./pages/explore/index";
 import PageNotFound from "./components/header/index";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { IConfiguration, IUrlConfig } from "./models/App";
+
 function App() {
-  const dispacth = useDispatch();
-  const url: any = useSelector((state: RootState) => state.home.url);
+  const dispatch = useDispatch();
+  // const {url} : any= useSelector((state: RootState) => state.home.url);
 
   useEffect(() => {
-    apiTesting();
+    fetchApiConfig();
   }, []);
 
-  const apiTesting = async () => {
-    await fetchDataFromApi("/movie/popular").then((res) => {
+  const fetchApiConfig = async () => {
+    await fetchDataFromApi("/configuration").then((res) => {
       console.log(res);
-      dispacth(getApiConfiguration(res));
+      const configuration: IConfiguration = res;
+      const url: IUrlConfig = {
+        backdrop: configuration?.images?.secure_base_url + "original",
+        poster: configuration?.images?.secure_base_url + "original",
+        profile: configuration?.images?.secure_base_url + "original",
+      };
+      dispatch(getApiConfiguration(url));
     });
   };
   return (
